@@ -1,0 +1,6 @@
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+aws-terraform-key
+aws-terraform-key.pub
+*.pem
