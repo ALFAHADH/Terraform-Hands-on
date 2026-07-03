@@ -6,8 +6,8 @@ resource "aws_eip" "nat_eip" {
 }
 
 resource "aws_eip" "ec2_jumphost_eip" {
-    domain = "vpc"
-    tags = {
+  domain = "vpc"
+  tags = {
     Name = "terraform-ec2-jumphost-eip"
   }
 }
