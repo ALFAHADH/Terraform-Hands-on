@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+
+  install:
+    commands:
+      - dnf install -y dnf-plugins-core
+      - dnf config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+      - dnf install -y terraform
+
+  build:
+    commands:
+      - terraform init
+      - terraform apply -auto-approve tfplan
