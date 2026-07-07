@@ -1,0 +1,49 @@
+steps:
+
+# Terraform Init
+- id: Terraform Init
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform init
+
+# Terraform Format
+- id: Terraform Format
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform fmt -check -recursive
+
+# Terraform Validate
+- id: Terraform Validate
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform validate
+
+# Terraform Plan
+- id: Terraform Plan
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform plan -out=tfplan
+
+# Save Plan
+- id: Upload Plan
+  name: gcr.io/cloud-builders/gsutil
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      gsutil cp tfplan gs://gcp-terraform-backend-2026/plans/tfplan
+
+options:
+  logging: CLOUD_LOGGING_ONLY

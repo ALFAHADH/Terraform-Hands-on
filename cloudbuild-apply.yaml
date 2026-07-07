@@ -1,0 +1,31 @@
+steps:
+
+# Terraform Init
+- id: Terraform Init
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform init
+
+# Download Saved Plan
+- id: Download Plan
+  name: gcr.io/cloud-builders/gsutil
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      gsutil cp gs://gcp-terraform-backend-2026/plans/tfplan .
+
+# Terraform Apply
+- id: Terraform Apply
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform apply -auto-approve tfplan
+
+options:
+  logging: CLOUD_LOGGING_ONLY
