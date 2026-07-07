@@ -1,20 +1,34 @@
 version: 0.2
 
+env:
+  variables:
+    TF_IN_AUTOMATION: "true"
+
 phases:
+
   install:
+    runtime-versions:
+      python: 3.11
+
     commands:
-      - apt-get update
-      - apt-get install -y wget unzip
-      - wget https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_linux_amd64.zip
-      - unzip -o terraform_1.12.2_linux_amd64.zip
+      - echo "Installing Terraform..."
+      - wget https://releases.hashicorp.com/terraform/1.15.7/terraform_1.15.7_linux_amd64.zip
+      - unzip terraform_1.15.7_linux_amd64.zip
+      - chmod +x terraform
       - mv terraform /usr/local/bin/
       - terraform version
+      - aws --version
 
   pre_build:
     commands:
+      - echo "Terraform Init"
       - terraform init
 
   build:
     commands:
-      - terraform validate
+      - echo "Terraform Apply"
       - terraform apply -auto-approve
+
+artifacts:
+  files:
+    - '**/*'
