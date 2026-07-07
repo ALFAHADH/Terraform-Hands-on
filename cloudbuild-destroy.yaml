@@ -1,0 +1,40 @@
+steps:
+
+# Initialize Terraform
+- id: "Terraform Init"
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform init
+
+# Validate Configuration
+- id: "Terraform Validate"
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform validate
+
+# Show Destroy Plan
+- id: "Terraform Destroy Plan"
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform plan -destroy -out=destroy.tfplan
+
+# Destroy Infrastructure
+- id: "Terraform Destroy"
+  name: hashicorp/terraform:1.13.2
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      terraform apply -auto-approve destroy.tfplan
+
+options:
+  logging: CLOUD_LOGGING_ONLY
